@@ -1,0 +1,23 @@
+- hosts:
+    - front
+    - ap
+  user: root
+  gather_facts: no
+  tasks:
+    # install
+    - yum: name=php enablerepo=remi-php55
+    - yum: name=php-fpm enablerepo=remi-php55
+    - yum: name=php-mysqlnd enablerepo=remi-php55
+    - yum: name=php-opcache enablerepo=remi-php55
+
+    # configure
+    - user: name=csf
+    - copy: src=php/php.ini dest=/etc/php.ini
+    - copy: src=php/php-fpm.conf dest=/etc/php-fpm.conf
+    - copy: src=php/php-fpm.d/www.conf dest=/etc/php-fpm.d/www.conf
+
+    # preload script
+    - copy: src=php/php-fpm dest=/etc/init.d/php-fpm
+
+    # service
+    - service: name=php-fpm state=started enabled=on

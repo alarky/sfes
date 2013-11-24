@@ -1,0 +1,14 @@
+- hosts: db
+  user: root
+  gather_facts: no
+  tasks:
+    # install
+#    - yum: name=mysql-community-server
+    - yum: name=/home/alarky/rpmbuild/RPMS/x86_64/MySQL-server-5.6.14-1_1.linux_glibc.x86_64.rpm
+
+    # configure
+    - copy: src=mysql/my.cnf dest=/etc/my.cnf
+
+    # service
+#    - service: name=mysqld state=started enabled=on
+    - service: name=mysql state=started enabled=on

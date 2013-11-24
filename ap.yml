@@ -1,0 +1,16 @@
+- hosts: ap
+  user: root
+  gather_facts: no
+  tasks:
+    # yum repo
+    - copy: src=yum.repos.d/nginx.repo dest=/etc/yum.repos.d/nginx.repo
+
+    # install
+    - yum: name=nginx
+
+    # configure
+    - copy: src=nginx.ap/nginx.conf dest=/etc/nginx/nginx.conf
+    - copy: src=nginx.ap/conf.d/default.conf dest=/etc/nginx/conf.d/default.conf
+
+    # service
+    - service: name=nginx state=started enabled=on

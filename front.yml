@@ -1,0 +1,17 @@
+- hosts: front
+  user: root
+  gather_facts: no
+  tasks:
+    # yum repo
+    - copy: src=yum.repos.d/nginx.repo dest=/etc/yum.repos.d/nginx.repo
+
+    # install
+    - yum: name=nginx enablerepo=nginx
+
+    # nginx configure
+    - copy: src=nginx.front/nginx dest=/etc/init.d/nginx
+    - copy: src=nginx.front/nginx.conf dest=/etc/nginx/nginx.conf
+    - copy: src=nginx.front/conf.d/default.conf dest=/etc/nginx/conf.d/default.conf
+
+    # service
+    - service: name=nginx state=started enabled=yes
